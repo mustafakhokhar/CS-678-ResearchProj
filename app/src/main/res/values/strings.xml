@@ -45,9 +45,9 @@
     </string-array>
 
     <string-array name="models_spinner_titles">
-        <item>MobileNet V1</item>
-        <item>EfficientDet Lite0</item>
-        <item>EfficientDet Lite1</item>
-        <item>EfficientDet Lite2</item>
+        <item>EffDet lite zero old</item>
+        <item>EffDet lite zero new</item>
+        <item>EffDet lite one</item>
+        <item>EffDet lite two</item>
     </string-array>
 </resources>
