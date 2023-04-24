@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "57435194584",
+    "project_id": "topicsresearch-118c1",
+    "storage_bucket": "topicsresearch-118c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57435194584:android:2672e191bb697f69d743ad",
+        "android_client_info": {
+          "package_name": "com.mustafa.topicsresearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57435194584-hdogt4knsa0chmr7cqgfga01cdd8cio6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2COWwkOCVsQLqUh5fw-12n9rvC2a7La8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57435194584-hdogt4knsa0chmr7cqgfga01cdd8cio6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57435194584:android:aef58832078a7755d743ad",
+        "android_client_info": {
+          "package_name": "org.tensorflow.lite.examples.objectdetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57435194584-hdogt4knsa0chmr7cqgfga01cdd8cio6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2COWwkOCVsQLqUh5fw-12n9rvC2a7La8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57435194584-hdogt4knsa0chmr7cqgfga01cdd8cio6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

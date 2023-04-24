@@ -19,6 +19,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'de.undercouch.download'
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 32
@@ -117,4 +119,11 @@ dependencies {
 
     implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
     implementation 'com.google.android.gms:play-services-tflite-gpu:16.0.0'
+
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-core:19.0.1'
+    implementation 'com.google.firebase:firebase-firestore:24.0.1'
+
 }

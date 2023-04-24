@@ -36,6 +36,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.firebase.firestore.FirebaseFirestore
+import org.tensorflow.lite.examples.objectdetection.LocationProvider
 import java.util.LinkedList
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -45,6 +47,11 @@ import org.tensorflow.lite.examples.objectdetection.databinding.FragmentCameraBi
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 
 class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
+
+    // Firebase
+    private lateinit var firestore: FirebaseFirestore
+    // LocationProvider
+    private lateinit var locationProvider: LocationProvider
 
     private val TAG = "CameraFragment"
 
@@ -101,6 +108,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         // Attach listeners to UI control widgets
         initBottomSheetControls()
+
+        // Location Provider  Initialised
+        locationProvider = LocationProvider(requireContext()) { location ->
+            // Handle location updates here
+        }
+        locationProvider.startLocationUpdates()
     }
 
     private fun initBottomSheetControls() {
@@ -293,6 +306,15 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
       imageHeight: Int,
       imageWidth: Int
     ) {
+        // Initialize Firestore
+        firestore = FirebaseFirestore.getInstance()
+
+        // Add dummy data to Firestore
+        // addDummyDataToFirestore()
+
+        // Send detected object information to Firestore
+        sendDetectedObjectsToFirestore(results)
+
         activity?.runOnUiThread {
             fragmentCameraBinding.bottomSheetLayout.inferenceTimeVal.text =
                 String.format("%d ms", inferenceTime)
@@ -327,5 +349,58 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         }
 
         fragmentCameraBinding.progressCircular.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationProvider.stopLocationUpdates()
+    }
+
+    private fun addDummyDataToFirestore() {
+        val dummyData = hashMapOf(
+            "name" to "John Doe",
+            "age" to 30,
+            "city" to "New York"
+        )
+
+        firestore.collection("users")
+            .add(dummyData)
+            .addOnSuccessListener { documentReference ->
+                // Log success
+                println("DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                // Log failure
+                println("Error adding document: $e")
+            }
+    }
+
+    private fun sendDetectedObjectsToFirestore(detections: MutableList<Detection>?) {
+        if (detections.isNullOrEmpty()) return
+
+        val coordinatesRef = firestore.collection("detectedObjects")
+        val location = locationProvider.getLastKnownLocation()
+
+        if (location != null) {
+            detections.forEach { detection ->
+                print("Hello World")
+                print(detection)
+                val detectedObject = mapOf(
+//                    "label" to detection.label,
+//                    "confidence" to detection.score,
+                    "latitude" to location.latitude,
+                    "longitude" to location.longitude,
+                    "timestamp" to System.currentTimeMillis()
+                )
+
+                coordinatesRef.add(detectedObject)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error adding document", e)
+                    }
+            }
+        }
     }
 }

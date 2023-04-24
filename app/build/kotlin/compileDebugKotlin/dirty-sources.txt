@@ -1,0 +1,5 @@
+/Users/mustafakhokhar/Documents/GitHub/CS-678-ResearchProj/app/src/main/java/org/tensorflow/lite/examples/objectdetection/MainActivity.kt
+/Users/mustafakhokhar/Documents/GitHub/CS-678-ResearchProj/app/src/main/java/org/tensorflow/lite/examples/objectdetection/OverlayView.kt
+/Users/mustafakhokhar/Documents/GitHub/CS-678-ResearchProj/app/src/main/java/org/tensorflow/lite/examples/objectdetection/fragments/PermissionsFragment.kt
+/Users/mustafakhokhar/Documents/GitHub/CS-678-ResearchProj/app/src/main/java/org/tensorflow/lite/examples/objectdetection/ObjectDetectorHelper.kt
+/Users/mustafakhokhar/Documents/GitHub/CS-678-ResearchProj/app/src/main/java/org/tensorflow/lite/examples/objectdetection/fragments/CameraFragment.kt

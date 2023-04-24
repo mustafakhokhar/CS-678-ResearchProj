@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-tflite-java:16.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/49869501cdcbf0593f59e525c9a6b58c/transformed/jetified-play-services-tflite-java-16.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/49869501cdcbf0593f59e525c9a6b58c/transformed/jetified-play-services-tflite-java-16.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/49869501cdcbf0593f59e525c9a6b58c/transformed/jetified-play-services-tflite-java-16.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/930269561e7008bec25667202a2019cf/transformed/jetified-play-services-tflite-java-16.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/930269561e7008bec25667202a2019cf/transformed/jetified-play-services-tflite-java-16.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-tflite-java/16.0.0/17bb074a3322b818abfda62f99bb3de17dfbc5fe/play-services-tflite-java-16.0.0-javadoc.jar!/" />

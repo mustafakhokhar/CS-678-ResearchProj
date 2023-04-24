@@ -21,6 +21,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.tensorflow.lite.examples.objectdetection.databinding.ActivityMainBinding
 
+import com.google.firebase.firestore.FirebaseFirestore
+
+
 /**
  * Main entry point into our app. This app follows the single-activity pattern, and all
  * functionality is implemented in the form of fragments.
