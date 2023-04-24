@@ -1,18 +1,3 @@
-/*
- * Copyright 2022 The TensorFlow Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *             http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.tensorflow.lite.examples.objectdetection.fragments
 
 import android.annotation.SuppressLint
@@ -37,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.type.LatLng
 import org.tensorflow.lite.examples.objectdetection.LocationProvider
 import java.util.LinkedList
 import java.util.concurrent.ExecutorService
@@ -50,6 +36,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     // Firebase
     private lateinit var firestore: FirebaseFirestore
+
     // LocationProvider
     private lateinit var locationProvider: LocationProvider
 
@@ -80,6 +67,12 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         }
     }
 
+    data class DetectedObject(
+        val latitude: Double,
+        val longitude: Double,
+        val timeStamp: Long
+    )
+
     override fun onDestroyView() {
         _fragmentCameraBinding = null
         super.onDestroyView()
@@ -89,9 +82,9 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     override fun onCreateView(
-      inflater: LayoutInflater,
-      container: ViewGroup?,
-      savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
 
@@ -104,7 +97,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         objectDetectorHelper = ObjectDetectorHelper(
             context = requireContext(),
-            objectDetectorListener = this)
+            objectDetectorListener = this
+        )
 
         // Attach listeners to UI control widgets
         initBottomSheetControls()
@@ -114,6 +108,35 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             // Handle location updates here
         }
         locationProvider.startLocationUpdates()
+        // Initialize Firestore
+        firestore = FirebaseFirestore.getInstance()
+
+        // Listen for updates to the 'detectedObjects' collection
+        firestore.collection("detectedObjects")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w(TAG, "Listen failed", error)
+                    return@addSnapshotListener
+                }
+
+                val detectedObjectsList = mutableListOf<DetectedObject>()
+                // Iterate over the documents in the collection
+                for (doc in value!!) {
+                    // Get the data for each detected object
+                    val latitude = doc.get("latitude") as? Double ?: 0.0
+                    val longitude = doc.get("longitude") as? Double ?: 0.0
+
+                    val timestamp = doc.getLong("timestamp") ?: 0
+
+                    val detectedObject = DetectedObject(
+                        latitude,
+                        longitude,
+                        timestamp
+                    )
+                    detectedObjectsList.add(detectedObject)
+                }
+                Log.d("list from db", detectedObjectsList.toString())
+            }
     }
 
     private fun initBottomSheetControls() {
@@ -301,17 +324,11 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     // Update UI after objects have been detected. Extracts original image height/width
     // to scale and place bounding boxes properly through OverlayView
     override fun onResults(
-      results: MutableList<Detection>?,
-      inferenceTime: Long,
-      imageHeight: Int,
-      imageWidth: Int
+        results: MutableList<Detection>?,
+        inferenceTime: Long,
+        imageHeight: Int,
+        imageWidth: Int
     ) {
-        // Initialize Firestore
-        firestore = FirebaseFirestore.getInstance()
-
-        // Add dummy data to Firestore
-        // addDummyDataToFirestore()
-
         // Send detected object information to Firestore
         sendDetectedObjectsToFirestore(results)
 
@@ -356,24 +373,52 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         locationProvider.stopLocationUpdates()
     }
 
-    private fun addDummyDataToFirestore() {
-        val dummyData = hashMapOf(
-            "name" to "John Doe",
-            "age" to 30,
-            "city" to "New York"
-        )
-
-        firestore.collection("users")
-            .add(dummyData)
-            .addOnSuccessListener { documentReference ->
-                // Log success
-                println("DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                // Log failure
-                println("Error adding document: $e")
-            }
-    }
+    //    private fun sendDetectedObjectsToFirestore(detections: MutableList<Detection>?) {
+//        if (detections.isNullOrEmpty()) return
+//
+//        val coordinatesRef = firestore.collection("detectedObjects")
+//        val location = locationProvider.getLastKnownLocation()
+//
+//        if (location != null) {
+//            val currentTimeMillis = System.currentTimeMillis()
+//            detections.forEach { detection ->
+//                val detectedObject = mapOf(
+//                    "category" to detection.categories,
+//                    "boundingBox" to detection.boundingBox,
+//                    "latitude" to location.latitude,
+//                    "longitude" to location.longitude,
+//                    "timestamp" to currentTimeMillis
+//                )
+//
+//                // Check if there's any data in Firebase for the same object and location within the last 5 minutes
+//                val query = coordinatesRef
+//                    .whereEqualTo("latitude", location.latitude)
+//                    .whereEqualTo("longitude", location.longitude)
+//                    .whereGreaterThanOrEqualTo("timestamp", currentTimeMillis - 60 * 1000)
+//                    .limit(1)
+//
+//                query.get().addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        val documents = task.result
+//                        if (documents != null && !documents.isEmpty) {
+//                            Log.d(TAG, "Data already exists in Firebase for the same object and location within the last 1 minutes.")
+//                        } else {
+//                            coordinatesRef.add(detectedObject)
+//                                .addOnSuccessListener { documentReference ->
+//                                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+//                                }
+//                                .addOnFailureListener { e ->
+//                                    Log.w(TAG, "Error adding document", e)
+//                                }
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.exception)
+//                    }
+//                }
+//            }
+//        }
+//    }
+    private var lastDetectionTime: Long = 0
 
     private fun sendDetectedObjectsToFirestore(detections: MutableList<Detection>?) {
         if (detections.isNullOrEmpty()) return
@@ -382,15 +427,19 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         val location = locationProvider.getLastKnownLocation()
 
         if (location != null) {
+            val currentTimeMillis = System.currentTimeMillis()
+            if (currentTimeMillis - lastDetectionTime < 60000) {
+                // If the last detection was less than 60 seconds ago, skip adding the current detection
+                Log.d(TAG, "1 minute cool down")
+                return
+            }
             detections.forEach { detection ->
-                print("Hello World")
-                print(detection)
                 val detectedObject = mapOf(
-//                    "label" to detection.label,
-//                    "confidence" to detection.score,
+                    "category" to detection.categories,
+                    "boundingBox" to detection.boundingBox,
                     "latitude" to location.latitude,
                     "longitude" to location.longitude,
-                    "timestamp" to System.currentTimeMillis()
+                    "timestamp" to currentTimeMillis
                 )
 
                 coordinatesRef.add(detectedObject)
@@ -401,6 +450,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                         Log.w(TAG, "Error adding document", e)
                     }
             }
+            lastDetectionTime = currentTimeMillis
         }
     }
+
 }

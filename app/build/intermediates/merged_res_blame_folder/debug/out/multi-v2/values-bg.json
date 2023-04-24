@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-34:/values-bg/values-bg.xml",
+            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-35:/values-bg/values-bg.xml",
             "map": [
                 {
                     "source": "/Users/mustafakhokhar/.gradle/caches/transforms-3/1013dc1fe6ca7d13a659dca5734bf269/transformed/core-1.6.0/res/values-bg/values-bg.xml",

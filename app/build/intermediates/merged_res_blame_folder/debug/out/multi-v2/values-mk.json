@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-34:/values-mk/values-mk.xml",
+            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-35:/values-mk/values-mk.xml",
             "map": [
                 {
                     "source": "/Users/mustafakhokhar/.gradle/caches/transforms-3/e9e2437d3e38cd7624ffb28ca247ef15/transformed/jetified-play-services-basement-18.1.0/res/values-mk/values.xml",

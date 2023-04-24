@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-34:/values-es/values-es.xml",
+            "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-35:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "/Users/mustafakhokhar/.gradle/caches/transforms-3/b8ed04f71855a2050f63b5f0f5053058/transformed/navigation-ui-2.3.5/res/values-es/values-es.xml",
