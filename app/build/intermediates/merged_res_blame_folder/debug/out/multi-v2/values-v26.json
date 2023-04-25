@@ -4,7 +4,7 @@
             "outputFile": "org.tensorflow.lite.examples.objectdetection.app-mergeDebugResources-35:/values-v26/values-v26.xml",
             "map": [
                 {
-                    "source": "/Users/mustafakhokhar/.gradle/caches/transforms-3/0fb9b74664f31fd44bb56934131e8ef5/transformed/appcompat-1.3.1/res/values-v26/values-v26.xml",
+                    "source": "/Users/nameer/.gradle/caches/transforms-3/0fb9b74664f31fd44bb56934131e8ef5/transformed/appcompat-1.3.1/res/values-v26/values-v26.xml",
                     "from": {
                         "startLines": "2,3,4,8,12,16",
                         "startColumns": "4,4,4,4,4,4",

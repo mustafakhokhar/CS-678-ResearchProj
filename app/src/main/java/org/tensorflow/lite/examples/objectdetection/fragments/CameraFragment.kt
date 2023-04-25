@@ -32,6 +32,8 @@ import org.tensorflow.lite.examples.objectdetection.R
 import org.tensorflow.lite.examples.objectdetection.databinding.FragmentCameraBinding
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 
+
+
 class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     // Firebase
@@ -135,7 +137,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                     )
                     detectedObjectsList.add(detectedObject)
                 }
+                val myData = "I am On"
                 Log.d("list from db", detectedObjectsList.toString())
+
+
+
+
+                Toast.makeText(requireContext(), "Alert!! The pothole is 10m Away  ", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -430,7 +438,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             val currentTimeMillis = System.currentTimeMillis()
             if (currentTimeMillis - lastDetectionTime < 60000) {
                 // If the last detection was less than 60 seconds ago, skip adding the current detection
-                Log.d(TAG, "1 minute cool down")
+//                Log.d(TAG, "1 minute cool down")
                 return
             }
             detections.forEach { detection ->
